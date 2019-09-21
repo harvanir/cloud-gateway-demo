@@ -1,0 +1,24 @@
+server:
+  port: 9595
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: items-route # from <http://cloud-gateway:9595/items/**> to <http://localhost:8181/v1/items/**>
+          uri: "http://localhost:8181"
+          predicates:
+            - Path=/items/**
+          filters:
+            - RewritePath=/items(?<items>.*), /v1/items/${items}
+        - id: go-routes # from <http://cloud-gateway:9595/go/**> to <http://localhost:7373/go/**>
+          uri: "http://localhost:7373"
+          predicates:
+            - Path=/go/**
+          filters:
+            - RewritePath=/go(?<go>.*), /go/${go}
+logging:
+  pattern:
+    console: "[%date{YYYY/MM/dd HH:mm:ss:SSS}] [%thread] [%level] [%logger{10}:%line] : %msg%n"
+  level:
+    org: info
+    com: info
