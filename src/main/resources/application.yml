@@ -22,3 +22,8 @@ logging:
   level:
     org: info
     com: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "info,health,refresh"
